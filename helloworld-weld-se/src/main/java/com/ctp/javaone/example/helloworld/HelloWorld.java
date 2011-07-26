@@ -8,22 +8,24 @@ import javax.inject.Inject;
 
 import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
+import org.slf4j.Logger;
 
 @ApplicationScoped
 public class HelloWorld {
 
-	@Inject
-	private @Parameters List<String> vargs;
-	
-	@Inject
-	private HelloWorldService helloService;
-	
-	public void printHelloWorld(@Observes ContainerInitialized init ) {
+    @Inject
+    private @Parameters List<String> vargs;
+    
+    @Inject
+    private Logger log;
 
-		if(!vargs.isEmpty()) {
-			System.out.println(helloService.sayHello(vargs.get(0)));
-		}
-		
-	}
-	
+    @Inject 
+    private HelloWorldService helloService;
+
+    public void printHelloWorld(@Observes ContainerInitialized init) {
+        if (!vargs.isEmpty()) {
+            log.info(helloService.sayHello(vargs.get(0)));
+        }
+    }
+
 }
