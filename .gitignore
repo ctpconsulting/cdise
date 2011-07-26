@@ -4,3 +4,10 @@
 /helloworld-weld-se/target/
 /.DS_Store
 .DS_Store
+/.settings/org.eclipse.jdt.core.prefs
+/.settings/org.maven.ide.eclipse.prefs
+/helloworld-weld-se/.settings/org.eclipse.jdt.core.prefs
+/helloworld-weld-se/.settings/org.maven.ide.eclipse.prefs
+/montecarlo/.classpath
+/montecarlo/.project
+/montecarlo/.settings/

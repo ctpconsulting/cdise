@@ -1,4 +1,4 @@
-package com.ctp.javaone.example.helloworld;
+package com.ctp.javaone.example.helloworld.service;
 
 import static junit.framework.Assert.assertEquals;
 

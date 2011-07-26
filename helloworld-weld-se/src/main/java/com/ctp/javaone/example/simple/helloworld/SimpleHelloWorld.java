@@ -9,22 +9,22 @@ import javax.inject.Inject;
 import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @ApplicationScoped
 public class SimpleHelloWorld {
     
-    private final Logger log = LoggerFactory.getLogger(SimpleHelloWorld.class);
-
     @Inject
-    private @Parameters List<String> vargs;
+    private Logger log;
 
-    public void main(@Observes ContainerInitialized init) {
-        if (vargs.isEmpty()) {
-            log.info("Hello World");
-        } else {
-            log.info("Hello " + vargs.get(0));
-        }
-    }
+	/* The Weld container fires the event ContainerInitialized
+	 * once the bootstrap is completed.
+	 */
+	public void hello(@Observes ContainerInitialized init, @Parameters List<String> vargs) {
+		if(vargs.isEmpty()) {
+		    log.info("Hello World");
+		} else {
+			log.info("Hello " + vargs.get(0));
+		}
+	}
 
 }

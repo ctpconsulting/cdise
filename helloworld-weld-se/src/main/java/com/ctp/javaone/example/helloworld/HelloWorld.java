@@ -10,6 +10,8 @@ import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 import org.slf4j.Logger;
 
+import com.ctp.javaone.example.helloworld.service.HelloWorldService;
+
 @ApplicationScoped
 public class HelloWorld {
 
