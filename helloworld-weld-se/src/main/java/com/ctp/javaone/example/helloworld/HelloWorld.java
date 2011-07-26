@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 
+import com.ctp.javaone.example.helloworld.service.HelloWorldService;
+
 @ApplicationScoped
 public class HelloWorld {
 

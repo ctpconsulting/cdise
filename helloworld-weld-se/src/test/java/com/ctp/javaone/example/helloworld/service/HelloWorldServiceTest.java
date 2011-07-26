@@ -1,4 +1,4 @@
-package com.ctp.javaone.example.helloworld;
+package com.ctp.javaone.example.helloworld.service;
 
 import javax.inject.Inject;
 
@@ -13,7 +13,6 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.ctp.javaone.example.helloworld.HelloWorldService;
 
 @RunWith(Arquillian.class)
 public class HelloWorldServiceTest {
