@@ -7,7 +7,7 @@
     <name>CDI Hello World</name>
 
     <build>
-        <finalName>helloworld</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
