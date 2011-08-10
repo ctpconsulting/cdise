@@ -1,4 +1,4 @@
-package com.ctp.javaone.example.log;
+package com.ctp.javaone.archiver.log;
 
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
