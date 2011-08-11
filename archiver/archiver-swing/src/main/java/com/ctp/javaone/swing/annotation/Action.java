@@ -12,9 +12,12 @@ import java.lang.annotation.Target;
 import javax.inject.Qualifier;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({FIELD,PARAMETER,METHOD,TYPE})
+@Target({
+        FIELD, PARAMETER, METHOD, TYPE
+})
 public @interface Action {
-	Class<? extends Object> value();
-	Qualifier[] qualifiers() default {};
+    Class<? extends Object> value();
+
+    Qualifier[] qualifiers() default {};
 
 }

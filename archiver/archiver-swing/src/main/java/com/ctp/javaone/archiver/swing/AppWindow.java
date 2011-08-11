@@ -63,7 +63,6 @@ public class AppWindow {
         System.out.println("Application started.");
     }
 
-
     public void submitPressed(@Observes JButton button) {
         System.out.println("File " + selectedFile + " selected.");
     }
@@ -104,7 +103,7 @@ public class AppWindow {
         lblPleaseChoosA = new JLabel("Please choose a file");
         lblPleaseChoosA.setHorizontalAlignment(SwingConstants.CENTER);
         frame.getContentPane().add(lblPleaseChoosA, BorderLayout.NORTH);
-        
+
         frame.setVisible(true);
     }
 
