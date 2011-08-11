@@ -7,9 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LoggerProducer {
-    
-    @Produces
-    public Logger createLogger(InjectionPoint injection) {
+
+    @Produces public Logger createLogger(InjectionPoint injection) {
         return LoggerFactory.getLogger(injection.getBean().getBeanClass());
     }
 
