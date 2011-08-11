@@ -17,57 +17,48 @@ import com.ctp.javaone.swing.annotation.Action;
 import com.ctp.javaone.swing.annotation.Text;
 
 public class ComponentFactory {
-    
-    @Inject Instance<Event<?>> eventInstance;
-    @Inject Instance<?> instance;
-    
-    
+
+    @Inject
+    Instance<Event<Object>> eventInstance;
+    @Inject
+    Instance<Object> instance;
+
     @Produces
     public JButton createJButton(InjectionPoint ip) {
         Annotated annotated = ip.getAnnotated();
-//        Type type = ip.getType();
-        
+        // Type type = ip.getType();
+
         JButton result = new JButton();
-        if (annotated.isAnnotationPresent(Text.class)){
+        if (annotated.isAnnotationPresent(Text.class)) {
             Text textAnn = annotated.getAnnotation(Text.class);
             setButtonText(result, textAnn.value());
         }
-        if (annotated.isAnnotationPresent(Action.class)){
+        if (annotated.isAnnotationPresent(Action.class)) {
             Action actionAnn = annotated.getAnnotation(Action.class);
             setActionListener(result, actionAnn);
         }
         return result;
     }
 
-    private void setActionListener(AbstractButton button, Action actionAnn) {
-        Class<?> eventClass = actionAnn.value();
-        try {
-            Object newInstance = eventClass.newInstance();
-        } catch (Exception e1) {
-            System.out.println("Unable to create event class");
-            return;
-        } 
+    private <T> void setActionListener(AbstractButton button, Action actionAnn) {
+        Class<T> eventClass = (Class<T>) actionAnn.value();
+
         Qualifier[] qualifiers = actionAnn.qualifiers();
-//        instance.select(newInstance, qualifiers);
-//        eventInstance.select(eventClass, qualifiers);
+
+        final Event<T> event = eventInstance.get().select(eventClass, qualifiers);
+        final T object = instance.select(eventClass, qualifiers).get();
         button.addActionListener(new ActionListener() {
-            
+
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                
+                event.fire(object);
+
             }
         });
-        
+
     }
-    
-//    @Inject
-//    private void getEvent(Instance<Event<?>> evtInstance){
-//        evtInstance.select(subtype, qualifiers)
-//    }
 
     private void setButtonText(AbstractButton button, String value) {
         button.setText(value);
-        
     }
 
 }

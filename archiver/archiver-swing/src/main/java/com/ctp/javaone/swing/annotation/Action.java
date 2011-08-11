@@ -14,6 +14,7 @@ import javax.inject.Qualifier;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({FIELD,PARAMETER,METHOD,TYPE})
 public @interface Action {
-    Class<?> value();
-    Qualifier[] qualifiers();
+	Class<? extends Object> value();
+	Qualifier[] qualifiers() default {};
+
 }
