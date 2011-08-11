@@ -1,6 +1,7 @@
 package com.ctp.javaone.archiver.main;
 
 import java.util.List;
+import java.util.Scanner;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -24,16 +25,27 @@ public class Archiver {
     @Inject 
     private ArchiverService archiverService;
 
+    
+    
     public void archive(@Observes ContainerInitialized init) {
-        if (!vargs.isEmpty()) {
-			log.info("Starting the archiving process...");
-			
-			//TODO archiving actions to be handeld here with help of ArchiverService
-            //example of a service call:
-			log.info(archiverService.sayHello(vargs.get(0)));
-			
-			log.info("End of archiving process");
-        }
-    }
+        	System.out.println(archiverService.getGreeting());
+        	
+			Scanner scanner = new Scanner(System.in);
+
+			while(true) {
+				System.out.print("\n>> ");
+			    String command = scanner.nextLine();
+			    switch (ArchiverService.Command.toCommand(command)) {
+					case exit:
+						return;
+						
+					case help:
+					case unknown:
+					default:
+						System.out.println(archiverService.getHelp());
+						break;
+				}
+			}
+	}
 
 }
