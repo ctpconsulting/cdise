@@ -48,6 +48,7 @@ public class AppWindow {
             public void run() {
                 try {
                     AppWindow window = new AppWindow();
+                    window.initialize();
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -60,7 +61,7 @@ public class AppWindow {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    // initialize();
+                    initialize();
                     frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -73,6 +74,7 @@ public class AppWindow {
      * Create the application.
      */
     public AppWindow() {
+        //constructor is called by container = injection is Not done yet.
         //initialize();
     }
 

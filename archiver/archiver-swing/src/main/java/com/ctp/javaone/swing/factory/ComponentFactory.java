@@ -62,11 +62,6 @@ public class ComponentFactory {
 
     }
 
-    // @Inject
-    // private void getEvent(Instance<Event<?>> evtInstance){
-    // evtInstance.select(subtype, qualifiers)
-    // }
-
     private void setButtonText(AbstractButton button, String value) {
         button.setText(value);
 
