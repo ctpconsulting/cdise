@@ -23,6 +23,7 @@ public class ArchiverServiceTest {
     public static JavaArchive createTestArchive() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
                 .addClasses(ArchiverService.class)
+                .addClasses(TestCommand.class)
                 .addAsManifestResource(new ByteArrayAsset("<beans/>".getBytes()), 
                                        ArchivePaths.create("beans.xml"));
     }
