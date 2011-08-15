@@ -13,6 +13,8 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.ctp.javaone.archiver.plugin.Help;
+
 @RunWith(Arquillian.class)
 public class ArchiverServiceTest {
 
@@ -23,7 +25,7 @@ public class ArchiverServiceTest {
     public static JavaArchive createTestArchive() {
         return ShrinkWrap.create(JavaArchive.class, "test.jar")
                 .addClasses(ArchiverService.class)
-                .addClasses(TestCommand.class)
+                .addClasses(Help.class)
                 .addAsManifestResource(new ByteArrayAsset("<beans/>".getBytes()), 
                                        ArchivePaths.create("beans.xml"));
     }

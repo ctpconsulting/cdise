@@ -14,6 +14,8 @@
     
     <modules>
         <module>archiver-main</module>
+        <module>archiver-swing</module>
+        <module>archiver-list</module>
     </modules>
     
     <dependencyManagement>

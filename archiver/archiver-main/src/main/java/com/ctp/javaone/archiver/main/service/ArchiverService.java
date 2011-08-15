@@ -16,10 +16,10 @@ public class ArchiverService {
         return greeting.toString();
     }
 
-    public enum Command {
+    public enum CommandEnum {
         help, exit, unknown;
 
-        public static Command toCommand(String command) {
+        public static CommandEnum toCommand(String command) {
             try {
                 return valueOf(command);
             } catch (Exception e) {
