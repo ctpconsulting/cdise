@@ -9,7 +9,12 @@ import com.ctp.javaone.archiver.command.Command;
 public class List implements Plugin {
 
     public String executeCommand(String... params) {
-        return "Executing List Command..";
+        StringBuilder greeting = new StringBuilder();
+        greeting.append("Available Archiver Commands:\n\n");
+        greeting.append("list\n");
+        greeting.append("archive\n");
+        greeting.append("exit\n");
+        return greeting.toString();
     }
 
 }

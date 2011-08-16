@@ -4,12 +4,13 @@ import javax.enterprise.context.ApplicationScoped;
 
 import com.ctp.javaone.archiver.command.Command;
 
-@Command("test")
+@Command("exit")
 @ApplicationScoped
-public class TestCommand implements Plugin {
+public class Exit implements Plugin {
 
     public String executeCommand(String... params) {
-        return "Executing Test Command..";
+        System.exit(0);
+        return null;
     }
 
 }
