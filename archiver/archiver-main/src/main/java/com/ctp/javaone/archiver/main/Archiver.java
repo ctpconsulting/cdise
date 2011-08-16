@@ -13,7 +13,6 @@ import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 
 import com.ctp.javaone.archiver.command.Command;
-import com.ctp.javaone.archiver.main.service.ArchiverService;
 import com.ctp.javaone.archiver.plugin.Plugin;
 import com.ctp.javaone.archiver.shell.Shell;
 import com.ctp.javaone.archiver.shell.ShellColor;
@@ -33,18 +32,15 @@ public class Archiver {
     @Inject
     private Shell shell;
 
-    @Inject
-    private ArchiverService archiverService;
-
     public void archive(@Observes
     ContainerInitialized init) {
-        shell.info(archiverService.getGreeting());
+        shell.info(getGreeting());
 
         // Check Injected Plugins
         // shell.warn("isAmbiguous: " + plugins.isAmbiguous());
         // shell.warn("isUnsatisfied: " + plugins.isUnsatisfied());
         // for (Plugin plugin : this.plugins) {
-        // shell.warn("added plugin: " + plugin.toString());
+        // shell.warn("added plugin: " + ((Command) plugin).value());
         // }
 
         while (true) {
@@ -61,17 +57,16 @@ public class Archiver {
 
                 shell.info(plugins.select(selectedCommand).get().executeCommand());
             } catch (Exception e) {
-                switch (ArchiverService.CommandEnum.toCommand(command)) {
-                case exit:
-                    return;
-                case unknown:
-                    shell.warn("Unknown command {0}", command);
-                    break;
-                default:
-                    shell.error("Unhandled case");
-                }
+                shell.warn("Unknown command {0}", command);
             }
         }
+    }
+    
+    private String getGreeting() {
+        StringBuilder greeting = new StringBuilder();
+        greeting.append("Welcome to archiver!\n");
+        greeting.append("Run 'list' for a list of all available commands. \n\n");
+        return greeting.toString();
     }
 
 }

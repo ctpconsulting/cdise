@@ -14,5 +14,5 @@ import javax.inject.Qualifier;
 })
 public @interface Command {
 
-    String value() default "test";
+    String value();
 }
