@@ -6,13 +6,13 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
-import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
 import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 
 import com.ctp.javaone.archiver.command.Command;
+import com.ctp.javaone.archiver.command.CommandQualifier;
 import com.ctp.javaone.archiver.plugin.Plugin;
 import com.ctp.javaone.archiver.shell.Shell;
 import com.ctp.javaone.archiver.shell.ShellColor;
@@ -45,16 +45,8 @@ public class Archiver {
 
         while (true) {
             final String command = shell.readLine(ShellColor.GREEN, ">> ");
-
             try {
-                abstract class CommandQualifier extends AnnotationLiteral<Command> implements Command {
-                }
-                Command selectedCommand = new CommandQualifier() {
-                    public String value() {
-                        return command;
-                    }
-                };
-
+                Command selectedCommand = new CommandQualifier(command);
                 shell.info(plugins.select(selectedCommand).get().executeCommand());
             } catch (Exception e) {
                 shell.warn("Unknown command {0}", command);
