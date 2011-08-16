@@ -11,13 +11,18 @@ import java.lang.annotation.Target;
 
 import javax.inject.Qualifier;
 
+/**
+ * Set additional Qualifiers to the Event procuce by an Injected UI Component
+ * @author sberthouzoz
+ * @version <pre>
+ * 16.08.2011: Initial version
+ * </pre>
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({
         FIELD, PARAMETER, METHOD, TYPE
 })
 public @interface Action {
-    Class<? extends Object> value();
-
-    Qualifier[] qualifiers() default {};
+    Qualifier[] value() default {};
 
 }
