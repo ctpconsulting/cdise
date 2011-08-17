@@ -5,16 +5,17 @@ import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
 import com.ctp.javaone.archiver.command.Command;
+import com.ctp.javaone.archiver.persistence.Auditable;
 
 @Command("list")
 @ApplicationScoped
+@Auditable
 public class List implements Plugin {
     
     @Inject 
