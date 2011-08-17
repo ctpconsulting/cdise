@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence"
-	version="1.0">
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
-	<persistence-unit name="archiverPU" transaction-type="RESOURCE_LOCAL">
-		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-		<class>com.ctp.javaone.archiver.persistence.model.Action</class>
-		<properties>
-			<property name="eclipselink.target-database" value="DERBY" />
-			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:derby:archiverPU;create=true" />
-			<property name="javax.persistence.jdbc.user" value="" />
-			<property name="javax.persistence.jdbc.password" value="" />
-			<property name="eclipselink.ddl-generation" value="create-tables" />
-			<property name="eclipselink.logging.level" value="INFO" />
-		</properties>
-	</persistence-unit>
+    <persistence-unit name="archiverPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>com.ctp.javaone.archiver.persistence.model.Action</class>
+        <properties>
+            <property name="eclipselink.target-database" value="DERBY" />
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby:./target/archiverPU;create=true" />
+            <property name="javax.persistence.jdbc.user" value="" />
+            <property name="javax.persistence.jdbc.password" value="" />
+            <property name="eclipselink.ddl-generation" value="create-tables" />
+            <property name="eclipselink.logging.level" value="INFO" />
+        </properties>
+    </persistence-unit>
+
 </persistence>

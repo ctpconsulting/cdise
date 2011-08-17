@@ -1,12 +1,20 @@
 package com.ctp.javaone.archiver.persistence.model;
 
-import java.sql.Timestamp;
 
-import javax.persistence.*;
+import java.text.MessageFormat;
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = Action.FIND_ALL, query = "SELECT a FROM Action a")
+    @NamedQuery(name = Action.FIND_ALL, query = "SELECT a FROM Action a ORDER BY a.id ASC")
 })
 public class Action {
 
@@ -15,19 +23,21 @@ public class Action {
     @Id
     @GeneratedValue
     private Long id;
-    private Timestamp timestamp;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
     private String action;
     
     public Action() {
     }
     
     public String toString() {
-        return id + " " + action + " " + timestamp;
+        return MessageFormat.format("[{0}]: [{1,date,dd.MM.yyyy-HH:mm}] {2}", String.format("%05d", id), timestamp, action);
     }
 
     public Action(String action) {
         this.action = action;
-        this.timestamp = new Timestamp(System.currentTimeMillis());
+        this.timestamp = new Date();
     }
 
     public String getAction() {
@@ -42,7 +52,7 @@ public class Action {
         return id;
     }
 
-    public Timestamp getTimestamp() {
+    public Date getTimestamp() {
         return timestamp;
     }
 

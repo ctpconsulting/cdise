@@ -6,13 +6,13 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
-import javax.enterprise.util.AnnotationLiteral;
+import javax.enterprise.inject.UnsatisfiedResolutionException;
 import javax.inject.Inject;
 
 import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 
-import com.ctp.javaone.archiver.command.Command;
+import com.ctp.javaone.archiver.command.CommandQualifier;
 import com.ctp.javaone.archiver.persistence.Auditable;
 import com.ctp.javaone.archiver.plugin.Plugin;
 import com.ctp.javaone.archiver.shell.Shell;
@@ -34,34 +34,27 @@ public class Archiver {
     private Shell shell;
 
     public void archive(@Observes ContainerInitialized init) {
-
-        shell.info(getGreeting());
-
+        shell.info(greet());
         while (true) {
             final String command = shell.readLine(ShellColor.GREEN, ">> ");
-
             try {
                 runCommand(command);
-            } catch (Exception e) {
+            } catch (UnsatisfiedResolutionException e) {
                 shell.warn("Unknown command {0}", command);
+            } catch (Exception e) {
+                e.printStackTrace();
+                shell.error("Command execution error: {0}", e.getMessage());
             }
         }
     }
 
-    @SuppressWarnings("all")
-    @Auditable private void runCommand(final String command) {
-        abstract class CommandQualifier extends AnnotationLiteral<Command> implements Command {
-        }
-        Command selectedCommand = new CommandQualifier() {
-            public String value() {
-                return command;
-            }
-        };
-
-        shell.info(plugins.select(selectedCommand).get().executeCommand());
+    @Auditable
+    private void runCommand(final String command) {
+        CommandQualifier qualifier = new CommandQualifier(command);
+        shell.info(plugins.select(qualifier).get().executeCommand());
     }
 
-    private String getGreeting() {
+    private String greet() {
         StringBuilder greeting = new StringBuilder();
         greeting.append("Welcome to archiver!\n");
         greeting.append("Run 'list' for a list of all available commands. \n\n");
