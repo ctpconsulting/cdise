@@ -6,13 +6,14 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.inject.Inject;
 
 import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 
 import com.ctp.javaone.archiver.command.Command;
-import com.ctp.javaone.archiver.command.CommandQualifier;
+import com.ctp.javaone.archiver.persistence.Auditable;
 import com.ctp.javaone.archiver.plugin.Plugin;
 import com.ctp.javaone.archiver.shell.Shell;
 import com.ctp.javaone.archiver.shell.ShellColor;
@@ -32,28 +33,34 @@ public class Archiver {
     @Inject
     private Shell shell;
 
-    public void archive(@Observes
-    ContainerInitialized init) {
-        shell.info(getGreeting());
+    public void archive(@Observes ContainerInitialized init) {
 
-        // Check Injected Plugins
-        // shell.warn("isAmbiguous: " + plugins.isAmbiguous());
-        // shell.warn("isUnsatisfied: " + plugins.isUnsatisfied());
-        // for (Plugin plugin : this.plugins) {
-        // shell.warn("added plugin: " + ((Command) plugin).value());
-        // }
+        shell.info(getGreeting());
 
         while (true) {
             final String command = shell.readLine(ShellColor.GREEN, ">> ");
+
             try {
-                Command selectedCommand = new CommandQualifier(command);
-                shell.info(plugins.select(selectedCommand).get().executeCommand());
+                runCommand(command);
             } catch (Exception e) {
                 shell.warn("Unknown command {0}", command);
             }
         }
     }
-    
+
+    @SuppressWarnings("all")
+    @Auditable private void runCommand(final String command) {
+        abstract class CommandQualifier extends AnnotationLiteral<Command> implements Command {
+        }
+        Command selectedCommand = new CommandQualifier() {
+            public String value() {
+                return command;
+            }
+        };
+
+        shell.info(plugins.select(selectedCommand).get().executeCommand());
+    }
+
     private String getGreeting() {
         StringBuilder greeting = new StringBuilder();
         greeting.append("Welcome to archiver!\n");
