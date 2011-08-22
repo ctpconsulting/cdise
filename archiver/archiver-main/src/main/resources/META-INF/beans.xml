@@ -11,5 +11,9 @@
 	<interceptors>
 		<class>com.ctp.javaone.archiver.persistence.AuditInterceptor</class>
 	</interceptors>
+	
+	<decorators>
+      <class>org.jboss.weld.environment.se.threading.RunnableDecorator</class>
+   </decorators>
 
 </beans>

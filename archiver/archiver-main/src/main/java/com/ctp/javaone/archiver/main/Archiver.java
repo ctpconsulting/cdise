@@ -1,5 +1,6 @@
 package com.ctp.javaone.archiver.main;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -50,8 +51,17 @@ public class Archiver {
 
     @Auditable
     private void runCommand(final String command) {
-        CommandQualifier qualifier = new CommandQualifier(command);
-        shell.info(plugins.select(qualifier).get().executeCommand());
+        String[] tokens = command.split(" ");
+        
+        String[] params = null;
+        if (tokens.length > 1) {
+            params = Arrays.copyOfRange(tokens, 1, tokens.length);
+        }
+            
+        CommandQualifier qualifier = new CommandQualifier(tokens[0]);
+        Instance<Plugin> select = plugins.select(qualifier);
+        Plugin plugin = select.get();
+        shell.info(plugin.executeCommand(params));
     }
 
     private String greet() {
