@@ -33,10 +33,11 @@ public class Archiver {
 
     @Inject
     private Shell shell;
+    private boolean running = true;
 
     public void archive(@Observes ContainerInitialized init) {
         shell.info(greet());
-        while (true) {
+        while (running) {
             final String command = shell.readLine(ShellColor.GREEN, ">> ");
             try {
                 runCommand(command);
@@ -69,6 +70,11 @@ public class Archiver {
         greeting.append("Welcome to archiver!\n");
         greeting.append("Run 'list' for a list of all available commands. \n\n");
         return greeting.toString();
+    }
+    
+    private synchronized void terminate(@Observes ExitEvent event) {
+        shell.info(event.getReason());
+        running = false;
     }
 
 }
