@@ -2,15 +2,16 @@ package com.ctp.javaone.archiver.plugin;
 
 import java.util.Iterator;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+
+import org.jboss.weld.environment.se.contexts.ThreadScoped;
 
 import com.ctp.javaone.archiver.command.Command;
 import com.ctp.javaone.archiver.persistence.model.Action;
 
 @Command("audit")
-@ApplicationScoped
+@ThreadScoped
 public class Audit implements Plugin {
 
     @Inject

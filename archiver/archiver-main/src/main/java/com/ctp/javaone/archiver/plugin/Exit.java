@@ -1,15 +1,16 @@
 package com.ctp.javaone.archiver.plugin;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+
+import org.jboss.weld.environment.se.contexts.ThreadScoped;
 
 import com.ctp.javaone.archiver.command.Command;
 import com.ctp.javaone.archiver.main.ExitEvent;
 import com.ctp.javaone.archiver.persistence.Auditable;
 
 @Command("exit")
-@ApplicationScoped
+@ThreadScoped
 @Auditable
 public class Exit implements Plugin {
     

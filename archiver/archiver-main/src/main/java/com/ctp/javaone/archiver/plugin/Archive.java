@@ -2,30 +2,33 @@ package com.ctp.javaone.archiver.plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+
+import org.jboss.weld.environment.se.contexts.ThreadScoped;
 
 import com.ctp.javaone.archiver.archive.ArchivingResult;
 import com.ctp.javaone.archiver.archive.ArchivingTask;
 import com.ctp.javaone.archiver.command.Command;
 import com.ctp.javaone.archiver.persistence.Auditable;
-import com.ctp.javaone.archiver.multithreading.ThreadPool;
 
 @Command("archive")
-@ApplicationScoped
+@ThreadScoped
 @Auditable
 public class Archive implements Plugin {
 
     @Inject
-    Instance<ArchivingTask> archivingInstance;
+    private Instance<ArchivingTask> archivingInstance;
+
+    private ExecutorService executor;
 
     @Inject
-    ThreadPool threadPool;
+    private ArchivingResult result;
 
-    @Inject
-    ArchivingResult result;
+    public static final int SIZE = 2;
 
     public synchronized String executeCommand(String... params) {
 
@@ -41,16 +44,17 @@ public class Archive implements Plugin {
         // TODO Introduce targetFolder as a new parameter
         File target = new File("C:\\archive\\" + source.getName());
 
+        executor = Executors.newFixedThreadPool(SIZE);
+
         try {
             copyDirectory(source, target);
         } catch (IOException e) {
             throw new NullPointerException(e.getMessage());
         }
 
-        while (!threadPool.isEnded()) {
-
+        executor.shutdown();
+        while (!executor.isTerminated()) {
         }
-
         int archivedFilesCount = result.getArchivedFilesCounter();
         result.resetArchivedFilesCounter();
 
@@ -69,10 +73,9 @@ public class Archive implements Plugin {
             }
         } else {
             ArchivingTask archiverTask = archivingInstance.get();
-            File[] params = new File[2];
-            params[0] = sourceLocation;
-            params[1] = targetLocation;
-            threadPool.assign(archiverTask, params);
+            archiverTask.setSource(sourceLocation);
+            archiverTask.setTarget(targetLocation);
+            executor.execute(archiverTask);
         }
     }
 }

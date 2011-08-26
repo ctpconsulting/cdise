@@ -11,10 +11,7 @@ import java.io.OutputStream;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-import org.jboss.weld.environment.se.contexts.ThreadScoped;
-
-@ThreadScoped
-public class ArchivingTask {
+public class ArchivingTask implements Runnable {
 
     @Inject
     private Event<FileArchivingEvent> archiveEvent;
