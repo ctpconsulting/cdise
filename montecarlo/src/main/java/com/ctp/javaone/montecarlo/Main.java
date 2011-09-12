@@ -8,17 +8,23 @@ import javax.inject.Singleton;
 import org.jboss.weld.environment.se.ShutdownManager;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
+import org.jboss.weld.environment.se.events.ContainerInitialized;
 
 @Singleton
 public class Main {
 
-
 	public static void main(String[] args) {
 		
-		WeldContainer weld = new Weld().initialize();
+		final WeldContainer weld = new Weld().initialize();
+		
+		java.awt.EventQueue.invokeLater(new Runnable() {
+                  public void run() {
+                      weld.event().select(ContainerInitialized.class).fire(new ContainerInitialized());
+                  }
+                });
+
 		List<Thread> threads = new ArrayList<Thread>();
-		
-		
+
 		for(int i = 0; i < Generator.MAX_THREADS; i++) {
 			final Worker worker = weld.instance().select(Worker.class).get();
 			Thread thread = new Thread(worker);
