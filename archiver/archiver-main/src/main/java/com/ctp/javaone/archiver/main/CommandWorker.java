@@ -25,7 +25,6 @@ public class CommandWorker implements Runnable {
     public void run() {
         try {
             String[] tokens = command.split(" ");
-
             String[] params = null;
             if (tokens.length > 1) {
                 params = Arrays.copyOfRange(tokens, 1, tokens.length);

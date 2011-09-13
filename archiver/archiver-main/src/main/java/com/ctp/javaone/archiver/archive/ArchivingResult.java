@@ -15,11 +15,6 @@ public class ArchivingResult {
     @Inject
     private Shell shell;
 
-    @PostConstruct
-    private void init() {
-        archivedFilesCounter = 0;
-    }
-
     public void onArchive(@Observes FileArchivingEvent event) {
         shell.info("Archiving task finished, source file: {0} , target: {1}", event.getSource(), event.getTarget());
         archivedFilesCounter++;
@@ -31,5 +26,10 @@ public class ArchivingResult {
 
     public void resetArchivedFilesCounter() {
         this.archivedFilesCounter = 0;
+    }
+
+    @PostConstruct
+    void init() {
+        archivedFilesCounter = 0;
     }
 }

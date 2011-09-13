@@ -44,9 +44,9 @@ public class ArchivingTask implements Runnable {
             in.close();
             out.close();
         } catch (FileNotFoundException e) {
-            throw new NullPointerException(e.getMessage());
+            throw new IllegalArgumentException(e.getMessage());
         } catch (IOException e) {
-            throw new NullPointerException(e.getMessage());
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 

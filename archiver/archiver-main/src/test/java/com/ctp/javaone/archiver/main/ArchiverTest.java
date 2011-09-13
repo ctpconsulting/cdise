@@ -8,7 +8,8 @@ import org.junit.Test;
 
 public class ArchiverTest {
 
-    @Test public void testArchive() {
+    @Test 
+    public void testArchive() {
         Archiver archiver = mock(Archiver.class);
         ContainerInitialized ci = mock(ContainerInitialized.class);
         archiver.archive(ci);

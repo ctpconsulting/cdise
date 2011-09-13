@@ -19,6 +19,8 @@ import com.ctp.javaone.archiver.persistence.Auditable;
 @ThreadScoped
 @Auditable
 public class Archive implements Plugin {
+    
+    public static final int SIZE = 2;
 
     @Inject
     private Instance<ArchivingTask> archivingInstance;
@@ -28,10 +30,8 @@ public class Archive implements Plugin {
     @Inject
     private ArchivingResult result;
 
-    public static final int SIZE = 2;
-
-    public synchronized String executeCommand(String... params) {
-
+    public String executeCommand(String... params) {
+        result.resetArchivedFilesCounter();
         if (params == null || params.length == 0) {
             throw new NullPointerException("Please pass pathname of the folder to be archived");
         }
@@ -42,7 +42,7 @@ public class Archive implements Plugin {
         }
 
         // TODO Introduce targetFolder as a new parameter
-        File target = new File("C:\\archive\\" + source.getName());
+        File target = new File("." + File.separator + "target/" + params[0]);
 
         executor = Executors.newFixedThreadPool(SIZE);
 
@@ -56,8 +56,7 @@ public class Archive implements Plugin {
         while (!executor.isTerminated()) {
         }
         int archivedFilesCount = result.getArchivedFilesCounter();
-        result.resetArchivedFilesCounter();
-
+        
         return "Archiving process concluded, total of archived files: " + archivedFilesCount;
     }
 

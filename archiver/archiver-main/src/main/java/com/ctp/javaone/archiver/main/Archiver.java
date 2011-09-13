@@ -23,12 +23,11 @@ public class Archiver {
     private static final int POOL_SIZE = 3;
 
     @SuppressWarnings("unused")
-    @Inject
-    private @Parameters
-    List<String> vargs;
+    @Inject @Parameters
+    private List<String> vargs;
 
     @Inject
-    private Instance<CommandWorker> commandExecuters;
+    private Instance<CommandWorker> commandWorkers;
 
     @Inject
     private Shell shell;
@@ -45,7 +44,7 @@ public class Archiver {
 
     @Auditable
     private void runCommand(String command) {
-        CommandWorker commandExecuter = commandExecuters.get();
+        CommandWorker commandExecuter = commandWorkers.get();
         commandExecuter.setCommand(command);
         executor.execute(commandExecuter);
     }
@@ -58,15 +57,15 @@ public class Archiver {
     }
 
     @PostConstruct
-    private void init() {
+    void init() {
         executor = Executors.newFixedThreadPool(POOL_SIZE);
     }
 
-    private synchronized void printCommandResult(@Observes CommandExecutedEvent event) {
+    synchronized void printCommandResult(@Observes CommandExecutedEvent event) {
         shell.info(event.getMessage());
     }
 
-    private synchronized void terminate(@Observes ExitEvent event) {
+    synchronized void terminate(@Observes ExitEvent event) {
         shell.info(event.getReason());
         executor.shutdownNow();
         System.exit(0);
