@@ -1,50 +1,42 @@
 package com.ctp.javaone.archiver.main;
 
-import java.util.Arrays;
-
 import javax.enterprise.event.Event;
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.UnsatisfiedResolutionException;
 import javax.inject.Inject;
 
-import com.ctp.javaone.archiver.command.CommandQualifier;
 import com.ctp.javaone.archiver.plugin.Plugin;
+import com.ctp.javaone.archiver.plugin.Result;
+import com.ctp.javaone.archiver.plugin.Status;
 
 public class CommandWorker implements Runnable {
-
-    @Inject
-    @Any
-    private Instance<Plugin> plugins;
-
+    
     @Inject
     private Event<CommandExecutedEvent> event;
 
-    private String command;
+    private Plugin plugin;
+    private String[] params;
 
+    @Override
     public void run() {
         try {
-            String[] tokens = command.split(" ");
-            String[] params = null;
-            if (tokens.length > 1) {
-                params = Arrays.copyOfRange(tokens, 1, tokens.length);
-            }
-            CommandQualifier qualifier = new CommandQualifier(tokens[0]);
-            Instance<Plugin> select = plugins.select(qualifier);
-            Plugin plugin = select.get();
-
-            String result = plugin.executeCommand(params);
-            event.fire(new CommandExecutedEvent(result));
-        } catch (UnsatisfiedResolutionException e) {
-            event.fire(new CommandExecutedEvent("Unknown command " + command));
+            Result result = plugin.executeCommand(params);
+            event.fire(new CommandExecutedEvent(result.getReason(), result.getStatus()));
         } catch (Exception e) {
             e.printStackTrace();
-            event.fire(new CommandExecutedEvent("Command execution error: " + e.getMessage()));
+            event.fire(new CommandExecutedEvent("Command execution error: " + e.getMessage(), Status.FAILURE));
         }
     }
+    
+    public void setWorkerContext(Plugin plugin, String[] params) {
+        this.plugin = plugin;
+        this.params = params;
+    }
 
-    public void setCommand(String command) {
-        this.command = command;
+    public Plugin getPlugin() {
+        return plugin;
+    }
+
+    public String[] getParams() {
+        return params;
     }
 
 }

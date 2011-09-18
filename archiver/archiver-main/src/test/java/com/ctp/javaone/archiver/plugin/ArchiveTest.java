@@ -47,8 +47,9 @@ public class ArchiveTest {
     
     @Test
     public void shouldProduceArchiveResult() {
-        String result = archive.executeCommand("pom.xml");
+        Result result = archive.executeCommand("pom.xml");
         Assert.assertNotNull(result);
+        Assert.assertEquals(Status.SUCCESS, result.getStatus());
     }
 
 }

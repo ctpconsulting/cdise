@@ -17,7 +17,7 @@ public class Audit implements Plugin {
     @Inject
     private EntityManager entityManager;
 
-    public String executeCommand(String... params) {
+    public Result executeCommand(String... params) {
         StringBuilder result = new StringBuilder();
 
         Iterator<Action> iterator = entityManager.createNamedQuery(Action.FIND_ALL, Action.class).getResultList().iterator();
@@ -25,7 +25,7 @@ public class Audit implements Plugin {
             Action action = (Action) iterator.next();
             result.append(action.toString()).append("\n");
         }
-        return result.toString();
+        return new Result(result.toString(), Status.SUCCESS);
     }
 
 }

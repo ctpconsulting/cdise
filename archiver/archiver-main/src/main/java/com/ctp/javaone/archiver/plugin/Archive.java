@@ -15,7 +15,8 @@ import com.ctp.javaone.archiver.archive.ArchivingTask;
 import com.ctp.javaone.archiver.command.Command;
 import com.ctp.javaone.archiver.persistence.Auditable;
 
-@Command("archive")
+@Command(value = "archive", async = true)
+//@Command("archive")
 @ThreadScoped
 @Auditable
 public class Archive implements Plugin {
@@ -30,12 +31,11 @@ public class Archive implements Plugin {
     @Inject
     private ArchivingResult result;
 
-    public String executeCommand(String... params) {
+    public Result executeCommand(String... params) {
         result.resetArchivedFilesCounter();
         if (params == null || params.length == 0) {
             throw new NullPointerException("Please pass pathname of the folder to be archived");
         }
-
         File source = new File(params[0]);
         if (!source.exists()) {
             throw new NullPointerException("The passed pathname does not exist.");
@@ -43,7 +43,6 @@ public class Archive implements Plugin {
 
         // TODO Introduce targetFolder as a new parameter
         File target = new File("." + File.separator + "target/" + params[0]);
-
         executor = Executors.newFixedThreadPool(SIZE);
 
         try {
@@ -57,7 +56,7 @@ public class Archive implements Plugin {
         }
         int archivedFilesCount = result.getArchivedFilesCounter();
         
-        return "Archiving process concluded, total of archived files: " + archivedFilesCount;
+        return new Result("Archiving process concluded, total of archived files: " + archivedFilesCount, Status.SUCCESS);
     }
 
     private void copyDirectory(File sourceLocation, File targetLocation) throws IOException {

@@ -23,7 +23,7 @@ public class List implements Plugin {
     private BeanManager beanManager;
 
     @SuppressWarnings("serial")
-    public String executeCommand(String... params) {
+    public Result executeCommand(String... params) {
         StringBuilder greeting = new StringBuilder();
         Set<Bean<?>> plugins = beanManager.getBeans(Plugin.class, new AnnotationLiteral<Any>() {});
         
@@ -38,7 +38,7 @@ public class List implements Plugin {
                 }
             }
         }
-        return greeting.toString();
+        return new Result(greeting.toString(), Status.SUCCESS);
     }
 
 }

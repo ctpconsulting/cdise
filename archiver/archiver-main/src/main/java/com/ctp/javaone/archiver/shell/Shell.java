@@ -47,7 +47,7 @@ public class Shell {
     
     public String readLine(ShellColor color, String message) {
         print(color, "\n" + message);
-        System.out.flush();
+        AnsiConsole.out.flush();
         return scanner.nextLine();
     }
     
@@ -75,7 +75,7 @@ public class Shell {
     }
     
     private String transform(ShellColor color, String message, Object[] args) {
-        return color.applyTo(new Ansi()).format(MessageFormat.format(message, args)).toString();
+        return color.applyTo(new Ansi()).render(MessageFormat.format(message, args)).reset().toString();
     }
 
 }

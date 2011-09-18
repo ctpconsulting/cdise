@@ -17,9 +17,9 @@ public class Exit implements Plugin {
     @Inject Event<ExitEvent> exitEvent;
     private static final String RESULT = ""; 
 
-    public String executeCommand(String... params) {
+    public Result executeCommand(String... params) {
         exitEvent.fire(new ExitEvent());
-        return RESULT;
+        return new Result(RESULT, Status.SUCCESS);
     }
 
 }
