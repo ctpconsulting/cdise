@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 
 import com.ctp.javaone.archiver.archive.ArchivingResult;
 import com.ctp.javaone.archiver.archive.ArchivingTask;
+import com.ctp.javaone.archiver.log.LoggerProducer;
 import com.ctp.javaone.archiver.shell.Shell;
 import com.ctp.javaone.test.ThreadContextRule;
 
@@ -33,14 +34,14 @@ public class ArchiveTest {
         return ShrinkWrap
                 .create(JavaArchive.class, "test.jar")
                 .addClasses(Archive.class, ArchivingTask.class, ArchivingResult.class)
-                .addClasses(Shell.class)
+                .addClasses(Shell.class, LoggerProducer.class)
                 .addAsManifestResource(
                         EmptyAsset.INSTANCE,
                         ArchivePaths.create("beans.xml"));
     }
     
     
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void shouldFileWithNullArgument() {
         archive.executeCommand((String[]) null);
     }

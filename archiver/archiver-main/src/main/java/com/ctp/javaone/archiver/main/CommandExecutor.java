@@ -4,19 +4,24 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javassist.util.proxy.ProxyFactory;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.UnsatisfiedResolutionException;
 import javax.inject.Inject;
 
-import com.ctp.javaone.archiver.command.Command;
+import com.ctp.javaone.archiver.command.Async;
 import com.ctp.javaone.archiver.command.CommandQualifier;
 import com.ctp.javaone.archiver.plugin.Plugin;
 import com.ctp.javaone.archiver.plugin.Status;
 
+@ApplicationScoped
 public class CommandExecutor {
     
     private static final int POOL_SIZE = 3;
@@ -39,7 +44,12 @@ public class CommandExecutor {
     
     @PreDestroy
     void terminate() {
-        executor.shutdownNow();
+        if (!executor.isShutdown())
+            executor.shutdownNow();
+    }
+    
+    void exit(@Observes ExitEvent event) {
+        terminate();
     }
     
     public void executeCommand(String command) {
@@ -70,9 +80,10 @@ public class CommandExecutor {
     }
     
     private boolean isAsync(Plugin plugin) {
-        if (plugin.getClass().isAnnotationPresent(Command.class)) {
-            Command command = plugin.getClass().getAnnotation(Command.class);
-            return command.async();
+        Class<?> pluginClass = plugin.getClass();
+        if (ProxyFactory.isProxyClass(pluginClass)) {
+            pluginClass = plugin.getClass().getSuperclass();
+            return pluginClass.isAnnotationPresent(Async.class);
         }
         return false;
     }

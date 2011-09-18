@@ -47,6 +47,17 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>org.jboss.weld.se:weld-se</artifact>
+                            <excludes>
+                                <exclude>org/slf4j/impl/Simple*</exclude>
+                                <exclude>org/slf4j/impl/Static*</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
             </plugin>
         </plugins>
     </build>

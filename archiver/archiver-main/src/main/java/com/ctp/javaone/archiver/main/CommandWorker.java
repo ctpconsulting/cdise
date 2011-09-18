@@ -21,7 +21,6 @@ public class CommandWorker implements Runnable {
             Result result = plugin.executeCommand(params);
             event.fire(new CommandExecutedEvent(result.getReason(), result.getStatus()));
         } catch (Exception e) {
-            e.printStackTrace();
             event.fire(new CommandExecutedEvent("Command execution error: " + e.getMessage(), Status.FAILURE));
         }
     }

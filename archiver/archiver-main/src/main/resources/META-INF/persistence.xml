@@ -13,7 +13,7 @@
             <property name="javax.persistence.jdbc.user" value="" />
             <property name="javax.persistence.jdbc.password" value="" />
             <property name="eclipselink.ddl-generation" value="create-tables" />
-            <property name="eclipselink.logging.level" value="INFO" />
+            <property name="eclipselink.logging.level" value="SEVERE" />
         </properties>
     </persistence-unit>
 

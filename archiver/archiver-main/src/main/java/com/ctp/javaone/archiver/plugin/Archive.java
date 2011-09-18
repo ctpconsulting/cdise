@@ -12,13 +12,14 @@ import org.jboss.weld.environment.se.contexts.ThreadScoped;
 
 import com.ctp.javaone.archiver.archive.ArchivingResult;
 import com.ctp.javaone.archiver.archive.ArchivingTask;
+import com.ctp.javaone.archiver.command.Async;
 import com.ctp.javaone.archiver.command.Command;
 import com.ctp.javaone.archiver.persistence.Auditable;
 
-@Command(value = "archive", async = true)
-//@Command("archive")
+@Async
 @ThreadScoped
 @Auditable
+@Command("archive")
 public class Archive implements Plugin {
     
     public static final int SIZE = 2;
@@ -34,21 +35,25 @@ public class Archive implements Plugin {
     public Result executeCommand(String... params) {
         result.resetArchivedFilesCounter();
         if (params == null || params.length == 0) {
-            throw new NullPointerException("Please pass pathname of the folder to be archived");
+            throw new IllegalArgumentException("Please pass pathname of the folder to be archived");
         }
         File source = new File(params[0]);
         if (!source.exists()) {
-            throw new NullPointerException("The passed pathname does not exist.");
+            throw new IllegalArgumentException("The passed pathname does not exist.");
         }
-
+        long sleep = 0;
+        if (params.length > 1) {
+            sleep = Long.valueOf(params[1]);
+        }
+        
         // TODO Introduce targetFolder as a new parameter
         File target = new File("." + File.separator + "target/" + params[0]);
         executor = Executors.newFixedThreadPool(SIZE);
 
         try {
-            copyDirectory(source, target);
+            copyDirectory(source, target, sleep);
         } catch (IOException e) {
-            throw new NullPointerException(e.getMessage());
+            throw new IllegalArgumentException(e.getMessage());
         }
 
         executor.shutdown();
@@ -59,7 +64,7 @@ public class Archive implements Plugin {
         return new Result("Archiving process concluded, total of archived files: " + archivedFilesCount, Status.SUCCESS);
     }
 
-    private void copyDirectory(File sourceLocation, File targetLocation) throws IOException {
+    private void copyDirectory(File sourceLocation, File targetLocation, long sleep) throws IOException {
         if (sourceLocation.isDirectory()) {
             if (!targetLocation.exists()) {
                 targetLocation.mkdirs();
@@ -67,13 +72,15 @@ public class Archive implements Plugin {
 
             String[] children = sourceLocation.list();
             for (int i = 0; i < children.length; i++) {
-                copyDirectory(new File(sourceLocation, children[i]), new File(targetLocation, children[i]));
+                copyDirectory(new File(sourceLocation, children[i]), new File(targetLocation, children[i]), sleep);
             }
         } else {
             ArchivingTask archiverTask = archivingInstance.get();
             archiverTask.setSource(sourceLocation);
             archiverTask.setTarget(targetLocation);
-            executor.execute(archiverTask);
+            archiverTask.setSleep(sleep);
+            archiverTask.execute();
+            //executor.execute(archiverTask);
         }
     }
 }
