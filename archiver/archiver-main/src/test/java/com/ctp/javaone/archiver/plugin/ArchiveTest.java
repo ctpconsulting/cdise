@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 
 import com.ctp.javaone.archiver.archive.ArchivingResult;
 import com.ctp.javaone.archiver.archive.ArchivingTask;
-import com.ctp.javaone.archiver.log.LoggerProducer;
+import com.ctp.javaone.archiver.log.LoggerFactory;
 import com.ctp.javaone.archiver.shell.Shell;
 import com.ctp.javaone.test.ThreadContextRule;
 
@@ -34,7 +34,7 @@ public class ArchiveTest {
         return ShrinkWrap
                 .create(JavaArchive.class, "test.jar")
                 .addClasses(Archive.class, ArchivingTask.class, ArchivingResult.class)
-                .addClasses(Shell.class, LoggerProducer.class)
+                .addClasses(Shell.class, LoggerFactory.class)
                 .addAsManifestResource(
                         EmptyAsset.INSTANCE,
                         ArchivePaths.create("beans.xml"));
