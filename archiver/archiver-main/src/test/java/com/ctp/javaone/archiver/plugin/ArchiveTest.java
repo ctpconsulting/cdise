@@ -42,7 +42,7 @@ public class ArchiveTest {
     
     
     @Test(expected = IllegalArgumentException.class)
-    public void shouldFileWithNullArgument() {
+    public void shouldFailWithNullArgument() {
         archive.executeCommand((String[]) null);
     }
     

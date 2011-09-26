@@ -11,6 +11,7 @@ public class CommandQualifier extends AnnotationLiteral<Command> implements Comm
         this.value = value;
     }
 
+    @Override
     public String value() {
         return value;
     }

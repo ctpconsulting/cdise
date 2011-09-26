@@ -42,6 +42,7 @@
     </category>
     
     <category name="com.ctp">
+        <priority value="DEBUG" />
         <appender-ref ref="FILE"/>
     </category>
 

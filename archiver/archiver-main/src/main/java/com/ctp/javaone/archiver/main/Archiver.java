@@ -9,7 +9,6 @@ import javax.inject.Inject;
 import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 
-import com.ctp.javaone.archiver.persistence.Auditable;
 import com.ctp.javaone.archiver.plugin.Status;
 import com.ctp.javaone.archiver.shell.Shell;
 import com.ctp.javaone.archiver.shell.ShellColor;
@@ -37,7 +36,6 @@ public class Archiver {
         }
     }
 
-    @Auditable
     private void runCommand(String command) {
         executor.executeCommand(command);
     }
