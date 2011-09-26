@@ -35,7 +35,7 @@ public class ArchivingTask implements Runnable {
 
     private void copyFile() {
         try {
-            // waiting loop, simulate log op
+            // waiting loop, simulate long op
             for (int i = 0; i < 5; i++) {
                 logger.info("Wait iteration " + i);
                 Thread.sleep(sleep);
