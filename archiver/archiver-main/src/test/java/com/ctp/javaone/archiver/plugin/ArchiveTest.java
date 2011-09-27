@@ -40,7 +40,6 @@ public class ArchiveTest {
                         ArchivePaths.create("beans.xml"));
     }
     
-    
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailWithNullArgument() {
         archive.executeCommand((String[]) null);

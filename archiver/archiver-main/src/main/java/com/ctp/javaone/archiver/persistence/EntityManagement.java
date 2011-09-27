@@ -39,6 +39,7 @@ public class EntityManagement {
 
     @PreDestroy
     void cleanup() {
+        logger.debug("EntityManagerFactory shutting down...");
         entityManagerFactory.close();
     }
 
