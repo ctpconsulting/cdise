@@ -16,6 +16,9 @@ import org.junit.runner.RunWith;
 
 import com.ctp.javaone.archiver.archive.ArchivingResult;
 import com.ctp.javaone.archiver.archive.ArchivingTask;
+import com.ctp.javaone.archiver.command.Archive;
+import com.ctp.javaone.archiver.command.Result;
+import com.ctp.javaone.archiver.command.Status;
 import com.ctp.javaone.archiver.log.LoggerFactory;
 import com.ctp.javaone.archiver.shell.Shell;
 import com.ctp.javaone.test.ThreadContextRule;
@@ -42,12 +45,12 @@ public class ArchiveTest {
     
     @Test(expected = IllegalArgumentException.class)
     public void shouldFailWithNullArgument() {
-        archive.executeCommand((String[]) null);
+        archive.execute((String[]) null);
     }
     
     @Test
     public void shouldProduceArchiveResult() {
-        Result result = archive.executeCommand("pom.xml");
+        Result result = archive.execute("pom.xml");
         Assert.assertNotNull(result);
         Assert.assertEquals(Status.SUCCESS, result.getStatus());
     }

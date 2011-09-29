@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import org.jboss.weld.environment.se.bindings.Parameters;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 
-import com.ctp.javaone.archiver.plugin.Status;
+import com.ctp.javaone.archiver.command.Status;
 import com.ctp.javaone.archiver.shell.Shell;
 import com.ctp.javaone.archiver.shell.ShellColor;
 

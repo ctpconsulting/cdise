@@ -17,9 +17,9 @@ import javax.enterprise.inject.UnsatisfiedResolutionException;
 import javax.inject.Inject;
 
 import com.ctp.javaone.archiver.command.Async;
-import com.ctp.javaone.archiver.command.CommandQualifier;
-import com.ctp.javaone.archiver.plugin.Plugin;
-import com.ctp.javaone.archiver.plugin.Status;
+import com.ctp.javaone.archiver.command.ShellCommandQualifier;
+import com.ctp.javaone.archiver.command.Command;
+import com.ctp.javaone.archiver.command.Status;
 
 @ApplicationScoped
 public class CommandExecutor {
@@ -27,7 +27,7 @@ public class CommandExecutor {
     private static final int POOL_SIZE = 3;
 
     @Inject @Any
-    private Instance<Plugin> plugins;
+    private Instance<Command> plugins;
 
     @Inject
     private Instance<CommandWorker> commandWorker;
@@ -60,7 +60,7 @@ public class CommandExecutor {
                 params = Arrays.copyOfRange(tokens, 1, tokens.length);
             }
             
-            Plugin plugin = resolvePlugin(tokens[0]);
+            Command plugin = resolvePlugin(tokens[0]);
             CommandWorker worker = commandWorker.get();
             worker.setWorkerContext(plugin, params);
             if (isAsync(plugin)) {
@@ -73,13 +73,13 @@ public class CommandExecutor {
         }
     }
     
-    private Plugin resolvePlugin(String command) {
-        CommandQualifier qualifier = new CommandQualifier(command);
-        Instance<Plugin> select = plugins.select(qualifier);
+    private Command resolvePlugin(String command) {
+        ShellCommandQualifier qualifier = new ShellCommandQualifier(command);
+        Instance<Command> select = plugins.select(qualifier);
         return select.get();
     }
     
-    private boolean isAsync(Plugin plugin) {
+    private boolean isAsync(Command plugin) {
         Class<?> pluginClass = plugin.getClass();
         if (ProxyFactory.isProxyClass(pluginClass)) {
             pluginClass = plugin.getClass().getSuperclass();

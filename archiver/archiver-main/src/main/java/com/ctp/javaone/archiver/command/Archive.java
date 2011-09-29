@@ -1,4 +1,4 @@
-package com.ctp.javaone.archiver.plugin;
+package com.ctp.javaone.archiver.command;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,15 +12,13 @@ import org.jboss.weld.environment.se.contexts.ThreadScoped;
 
 import com.ctp.javaone.archiver.archive.ArchivingResult;
 import com.ctp.javaone.archiver.archive.ArchivingTask;
-import com.ctp.javaone.archiver.command.Async;
-import com.ctp.javaone.archiver.command.Command;
 import com.ctp.javaone.archiver.persistence.Auditable;
 
 @Async
 @ThreadScoped
 @Auditable
-@Command("archive")
-public class Archive implements Plugin {
+@ShellCommand("archive")
+public class Archive implements Command {
     
     public static final int SIZE = 2;
 
@@ -32,7 +30,7 @@ public class Archive implements Plugin {
     @Inject
     private ArchivingResult result;
 
-    public Result executeCommand(String... params) {
+    public Result execute(String... params) {
         result.resetArchivedFilesCounter();
         if (params == null || params.length == 0) {
             throw new IllegalArgumentException("Please pass pathname of the folder to be archived");

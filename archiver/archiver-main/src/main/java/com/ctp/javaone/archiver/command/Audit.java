@@ -1,4 +1,4 @@
-package com.ctp.javaone.archiver.plugin;
+package com.ctp.javaone.archiver.command;
 
 import java.util.Iterator;
 
@@ -7,17 +7,16 @@ import javax.persistence.EntityManager;
 
 import org.jboss.weld.environment.se.contexts.ThreadScoped;
 
-import com.ctp.javaone.archiver.command.Command;
 import com.ctp.javaone.archiver.persistence.model.Action;
 
-@Command("audit")
 @ThreadScoped
-public class Audit implements Plugin {
+@ShellCommand("audit")
+public class Audit implements Command {
 
     @Inject
     private EntityManager entityManager;
 
-    public Result executeCommand(String... params) {
+    public Result execute(String... params) {
         StringBuilder result = new StringBuilder();
 
         Iterator<Action> iterator = entityManager.createNamedQuery(Action.FIND_ALL, Action.class).getResultList().iterator();

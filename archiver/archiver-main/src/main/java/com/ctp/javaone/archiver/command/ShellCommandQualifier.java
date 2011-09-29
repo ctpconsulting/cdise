@@ -3,11 +3,11 @@ package com.ctp.javaone.archiver.command;
 import javax.enterprise.util.AnnotationLiteral;
 
 @SuppressWarnings("all")
-public class CommandQualifier extends AnnotationLiteral<Command> implements Command {
+public class ShellCommandQualifier extends AnnotationLiteral<ShellCommand> implements ShellCommand {
 
     private final String value;
 
-    public CommandQualifier(String value) {
+    public ShellCommandQualifier(String value) {
         this.value = value;
     }
 

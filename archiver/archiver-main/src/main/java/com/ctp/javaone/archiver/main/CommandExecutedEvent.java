@@ -1,6 +1,6 @@
 package com.ctp.javaone.archiver.main;
 
-import com.ctp.javaone.archiver.plugin.Status;
+import com.ctp.javaone.archiver.command.Status;
 
 public class CommandExecutedEvent {
 
