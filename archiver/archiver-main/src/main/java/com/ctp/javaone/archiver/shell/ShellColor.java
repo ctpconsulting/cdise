@@ -25,6 +25,11 @@ public enum ShellColor {
         @Override public Ansi applyTo(Ansi ansi) {
             return ansi.fg(Color.YELLOW);
         }
+    }, 
+    BLUE {
+        @Override Ansi applyTo(Ansi ansi) {
+            return ansi.fg(Color.BLUE);
+        }
     };
 
     abstract Ansi applyTo(Ansi ansi);

@@ -4,6 +4,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.weld.environment.se.events.ContainerInitialized;
 
 import com.ctp.javaone.archiver.command.Status;
@@ -24,7 +25,7 @@ public class Archiver {
     public void archive(@Observes ContainerInitialized init) {
         shell.info(greet());
         while (!shutdownRequested) {
-            final String command = shell.readLine(ShellColor.GREEN, ">> ");
+            final String command = shell.readLine(ShellColor.GREEN, "$ ");
             runCommand(command);
         }
     }
@@ -42,7 +43,7 @@ public class Archiver {
 
     void printCommandResult(@Observes CommandExecutedEvent event) {
         String message = event.getMessage();
-        if (event.getStatus() == Status.SUCCESS)
+        if (event.getStatus() == Status.SUCCESS && StringUtils.isNotEmpty(message))
             shell.info(message);
         else
             shell.error(message);
