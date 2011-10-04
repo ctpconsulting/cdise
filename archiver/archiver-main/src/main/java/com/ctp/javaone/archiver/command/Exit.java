@@ -6,10 +6,8 @@ import javax.inject.Inject;
 import org.jboss.weld.environment.se.contexts.ThreadScoped;
 
 import com.ctp.javaone.archiver.main.ExitEvent;
-import com.ctp.javaone.archiver.persistence.Auditable;
 
 @ThreadScoped
-@Auditable
 @ShellCommand("exit")
 public class Exit implements Command {
     
