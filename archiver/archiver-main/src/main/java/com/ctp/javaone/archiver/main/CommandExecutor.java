@@ -17,8 +17,8 @@ import javax.enterprise.inject.UnsatisfiedResolutionException;
 import javax.inject.Inject;
 
 import com.ctp.javaone.archiver.command.Async;
-import com.ctp.javaone.archiver.command.ShellCommandQualifier;
 import com.ctp.javaone.archiver.command.Command;
+import com.ctp.javaone.archiver.command.ShellCommandQualifier;
 import com.ctp.javaone.archiver.command.Status;
 
 @ApplicationScoped
@@ -76,7 +76,10 @@ public class CommandExecutor {
     private Command resolvePlugin(String command) {
         ShellCommandQualifier qualifier = new ShellCommandQualifier(command);
         Instance<Command> select = plugins.select(qualifier);
-        return select.get();
+        if (!select.isUnsatisfied())
+        	return select.get();
+        else
+        	throw new UnsatisfiedResolutionException();
     }
     
     private boolean isAsync(Command plugin) {

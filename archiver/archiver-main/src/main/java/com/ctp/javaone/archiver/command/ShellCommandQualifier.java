@@ -3,7 +3,8 @@ package com.ctp.javaone.archiver.command;
 import javax.enterprise.util.AnnotationLiteral;
 
 @SuppressWarnings("all")
-public class ShellCommandQualifier extends AnnotationLiteral<ShellCommand> implements ShellCommand {
+public class ShellCommandQualifier extends AnnotationLiteral<ShellCommand> 
+		implements ShellCommand {
 
     private final String value;
 

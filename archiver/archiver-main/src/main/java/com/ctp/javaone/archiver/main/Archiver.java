@@ -26,7 +26,7 @@ public class Archiver {
     @Inject
     private Shell shell;
     
-    private boolean shutdownRequested = false;
+    private volatile boolean shutdownRequested = false;
 
     public void archive(@Observes ContainerInitialized init) {
         shell.info(greet());
