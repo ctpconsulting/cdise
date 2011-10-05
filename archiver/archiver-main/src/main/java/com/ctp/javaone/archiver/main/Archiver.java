@@ -26,7 +26,9 @@ public class Archiver {
         shell.info(greet());
         while (!shutdownRequested) {
             final String command = shell.readLine(ShellColor.GREEN, ">> ");
-            runCommand(command);
+            synchronized (this) {
+                runCommand(command);                
+            }
         }
     }
 

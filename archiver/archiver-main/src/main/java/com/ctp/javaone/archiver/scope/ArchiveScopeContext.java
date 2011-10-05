@@ -118,8 +118,7 @@ public class ArchiveScopeContext implements Context {
     @PreDestroy
     void shutdown() {
         current = null;
-        for (Entry<Contextual<?>, Object> componentEntry : components.entrySet())
-        {
+        for (Entry<Contextual<?>, Object> componentEntry : components.entrySet()) {
            Contextual contextual = componentEntry.getKey();
            Object instance = componentEntry.getValue();
            CreationalContext creational = (CreationalContext) contexts.get(contextual);
