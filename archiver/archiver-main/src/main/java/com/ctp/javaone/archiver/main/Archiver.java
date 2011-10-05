@@ -25,7 +25,7 @@ public class Archiver {
     public void archive(@Observes ContainerInitialized init) {
         shell.info(greet());
         while (!shutdownRequested) {
-            final String command = shell.readLine(ShellColor.GREEN, "$ ");
+            final String command = shell.readLine(ShellColor.GREEN, ">> ");
             runCommand(command);
         }
     }

@@ -8,11 +8,18 @@ import java.util.Scanner;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.event.Observes;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 
 import org.fusesource.jansi.Ansi;
 import org.fusesource.jansi.AnsiConsole;
+
+import com.ctp.javaone.archiver.persistence.model.Archive;
+import com.ctp.javaone.archiver.scope.ArchiveScoped;
+import com.ctp.javaone.archiver.scope.Current;
 
 @ApplicationScoped
 public class Shell {
@@ -20,6 +27,9 @@ public class Shell {
     private Scanner scanner;
     
     private File currentDirectory = new File(".");
+    
+    @Inject @Current @ArchiveScoped
+    private Instance<Archive> archive;
     
     // ------------------------------------------------------------------
     // PUBLIC METHODS
@@ -54,10 +64,25 @@ public class Shell {
     }
     
     public String readLine(ShellColor color, String message) {
-        print(ShellColor.BLUE, "\n[" + currentDirectory() + "] ");
+        printArchive();
+        print(ShellColor.BLUE, "[" + currentDirectory() + "] ");
         print(color, message);
         AnsiConsole.out.flush();
         return scanner.nextLine();
+    }
+    
+    private void printArchive() {
+        try {
+            if (!archive.isUnsatisfied()) {
+                Archive currentArchive = archive.get();
+                print(ShellColor.RED, "[" + currentArchive.getName() + "] ");
+            }
+        } catch (ContextNotActiveException e) {}
+    }
+
+    @Produces
+    public File getCurrentDirectory() {
+        return currentDirectory;
     }
     
     // ------------------------------------------------------------------
@@ -73,11 +98,6 @@ public class Shell {
     @PreDestroy
     void shutdown() {
         AnsiConsole.systemUninstall();
-    }
-    
-    @Produces
-    File exposeCurrentDirectory() {
-        return currentDirectory;
     }
     
     void directoryChanged(@Observes File file) {

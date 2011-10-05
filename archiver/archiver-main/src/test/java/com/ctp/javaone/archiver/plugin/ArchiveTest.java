@@ -20,6 +20,7 @@ import com.ctp.javaone.archiver.command.Archive;
 import com.ctp.javaone.archiver.command.Result;
 import com.ctp.javaone.archiver.command.Status;
 import com.ctp.javaone.archiver.log.LoggerFactory;
+import com.ctp.javaone.archiver.scope.ArchiveScopeContext;
 import com.ctp.javaone.archiver.shell.Shell;
 import com.ctp.javaone.test.ThreadContextRule;
 
@@ -38,6 +39,7 @@ public class ArchiveTest {
                 .create(JavaArchive.class, "test.jar")
                 .addClasses(Archive.class, ArchivingTask.class, ArchivingResult.class)
                 .addClasses(Shell.class, LoggerFactory.class)
+                .addClasses(ArchiveScopeContext.class)
                 .addAsManifestResource(
                         EmptyAsset.INSTANCE,
                         ArchivePaths.create("beans.xml"));
