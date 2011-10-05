@@ -94,10 +94,13 @@ public class ArchiveScopeContext implements Context {
     Archive getCurrent() {
         Bean<ArchiveScopeContext> bean = (Bean<ArchiveScopeContext>) manager.resolve(manager
                 .getBeans(ArchiveScopeContext.class));
-        CreationalContext<ArchiveScopeContext> context = manager.createCreationalContext(bean);
-        ArchiveScopeContext scopedContext = (ArchiveScopeContext) manager
-                .getReference(bean, ArchiveScopeContext.class, context);
-        return scopedContext.current;
+        if (bean != null) {
+            CreationalContext<ArchiveScopeContext> context = manager.createCreationalContext(bean);
+            ArchiveScopeContext scopedContext = (ArchiveScopeContext) manager
+                    .getReference(bean, ArchiveScopeContext.class, context);
+            return scopedContext.current;
+        }
+        return null;
     }
     
     void currentDirChanged(@Observes File directory) {

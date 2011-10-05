@@ -77,9 +77,9 @@ public class CommandExecutor {
         ShellCommandQualifier qualifier = new ShellCommandQualifier(command);
         Instance<Command> select = plugins.select(qualifier);
         if (!select.isUnsatisfied())
-        	return select.get();
+            return select.get();
         else
-        	throw new UnsatisfiedResolutionException();
+            throw new UnsatisfiedResolutionException();
     }
     
     private boolean isAsync(Command plugin) {

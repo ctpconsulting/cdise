@@ -1,4 +1,4 @@
-package com.ctp.javaone.archiver.plugin;
+package com.ctp.javaone.archiver.command;
 
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
