@@ -21,6 +21,7 @@ import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 
+import com.ctp.javaone.archiver.main.ExitEvent;
 import com.ctp.javaone.archiver.persistence.model.Archive;
 
 @Singleton
@@ -112,23 +113,29 @@ public class ArchiveScopeContext implements Context {
             current = new Archive(archiveDesc.list()[0]);
         }
         if (currentArchive != null && newArchive == null) {
-            logger.info("Stopping archive context");
             shutdown();
         }
+    }
+    
+    void shutdownRequested(@Observes ExitEvent event) {
+        shutdown();
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @PreDestroy
     void shutdown() {
-        current = null;
-        for (Entry<Contextual<?>, Object> componentEntry : components.entrySet()) {
-           Contextual contextual = componentEntry.getKey();
-           Object instance = componentEntry.getValue();
-           CreationalContext creational = (CreationalContext) contexts.get(contextual);
-           contextual.destroy(instance, creational);
+        if (isActive()) {
+            logger.info("Stopping archive context");
+            current = null;
+            for (Entry<Contextual<?>, Object> componentEntry : components.entrySet()) {
+               Contextual contextual = componentEntry.getKey();
+               Object instance = componentEntry.getValue();
+               CreationalContext creational = (CreationalContext) contexts.get(contextual);
+               contextual.destroy(instance, creational);
+            }
+            components.clear();
+            contexts.clear();
         }
-        components.clear();
-        contexts.clear();
     }
     
     private File searchArchive() {
